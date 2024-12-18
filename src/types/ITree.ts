@@ -1,5 +1,5 @@
 export interface ITree {
-  id: number;
+  id: string;
   adress: string;
   species: string;
   age?: number;

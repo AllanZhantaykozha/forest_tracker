@@ -2,6 +2,9 @@ import { ITree } from "@/types/ITree";
 import { formatDate } from "@/utils/formatDate";
 import React, { useState } from "react";
 import { MonitoringModal } from "./MonitoringModal";
+import { WaterModal } from "./WaterModal";
+import { TreesModal } from "./TreesModal";
+import { FilterModal } from "./FilterModal";
 
 interface Props {
   className?: string;
@@ -15,9 +18,36 @@ export const PanelContol: React.FC<Props> = ({
   trees,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpenTrees, setIsOpenTrees] = useState<boolean>(false);
+  const [isOpenWater, setIsOpenWater] = useState<boolean>(false);
+  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
+
+  const closeModalFilter = () => {
+    setIsOpen(false);
+    setIsOpenWater(false);
+    setIsOpenTrees(false);
+    setIsOpenFilter(!isOpenFilter);
+  };
 
   const closeModal = () => {
+    setIsOpenWater(false);
+    setIsOpenTrees(false);
+    setIsOpenFilter(false);
     setIsOpen(!isOpen);
+  };
+
+  const closeModalWater = () => {
+    setIsOpen(false);
+    setIsOpenTrees(false);
+    setIsOpenFilter(false);
+    setIsOpenWater(!isOpenWater);
+  };
+
+  const closeModalTrees = () => {
+    setIsOpen(false);
+    setIsOpenWater(false);
+    setIsOpenFilter(false);
+    setIsOpenTrees(!isOpenTrees);
   };
 
   return (
@@ -25,34 +55,52 @@ export const PanelContol: React.FC<Props> = ({
       <div className="flex flex-col mb-4">
         <button
           onClick={() => setAction("add")}
-          className="w-full p-2 mb-2 bg-transparent border-2 border-black text-black rounded"
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
         >
           Добавить
         </button>
         <button
           onClick={() => setAction("edit")}
-          className="w-full p-2 mb-2 bg-transparent border-2 border-black text-black rounded"
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
         >
           Редактировать
         </button>
         <button
           onClick={() => setAction("remove")}
-          className="w-full p-2 mb-2 bg-transparent border-2 border-black text-black rounded"
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
         >
           Удалить
         </button>
         <button
           onClick={() => setAction("move")}
-          className="w-full p-2 mb-2 bg-transparent border-2 border-black text-black rounded"
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
         >
           Переместить
         </button>
         {/* Используем MonitoringModal как компонент JSX */}
         <button
           onClick={closeModal}
-          className="w-full p-2 mb-2 bg-transparent border-2 border-black text-black rounded"
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
         >
           Мониторинг
+        </button>
+        <button
+          onClick={closeModalWater}
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
+        >
+          Полив
+        </button>
+        <button
+          onClick={closeModalTrees}
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
+        >
+          Паспорта
+        </button>
+        <button
+          onClick={closeModalFilter}
+          className="w-full p-2 mb-2 bg-transparent border-2 border-[#004242] text-[#004242] rounded"
+        >
+          Фильтр
         </button>
       </div>
 
@@ -122,6 +170,21 @@ export const PanelContol: React.FC<Props> = ({
 
       {/* Передаем пропсы в MonitoringModal */}
       <MonitoringModal isOpen={isOpen} closeModal={closeModal} trees={trees} />
+      <WaterModal
+        isOpen={isOpenWater}
+        closeModal={closeModalWater}
+        trees={trees}
+      />
+      <TreesModal
+        isOpen={isOpenTrees}
+        closeModal={closeModalTrees}
+        trees={trees}
+      />
+      <FilterModal
+        isOpen={isOpenFilter}
+        closeModal={closeModalFilter}
+        trees={trees}
+      />
     </div>
   );
 };
